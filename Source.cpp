@@ -6,7 +6,6 @@
 
 TCHAR szClassName[] = TEXT("FnKeyWindowMove");
 HHOOK hHook;
-HWND hMainWnd;
 HWND hTargetWnd;
 POINT pt;
 POINT ptOffset;
@@ -71,7 +70,6 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam)
 			pt.x = pMS->pt.x - ptOffset.x;
 			pt.y = pMS->pt.y - ptOffset.y;
 			SetWindowPos(hTargetWnd, 0, pt.x, pt.y, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
-			InvalidateRect(hMainWnd, 0, TRUE);
 		}
 		break;
 	case WM_LBUTTONUP:
@@ -90,7 +88,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	switch (msg)
 	{
 	case WM_CREATE:
-		hMainWnd = hWnd;
 		AddTaskbarIcon(hWnd, &tnd);
 		hHook = SetWindowsHookEx(WH_MOUSE_LL, MouseHookProc, NULL, 0);
 		break;
